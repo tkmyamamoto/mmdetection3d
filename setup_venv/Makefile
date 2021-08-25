@@ -18,6 +18,8 @@ miniconda.done: show_variables
 	touch miniconda.done
 
 pytorch.done: miniconda.done
+	# Numpy version is better to fix for the compatibility
+	. ./activate_python.sh && conda install numpy==1.19.5
 	. ./activate_python.sh && conda install -y pytorch==$(PYTORCH_VERSION) \
 		torchvision==$(TORCH_VISION_VERSION) cudatoolkit=$(CUDA_VERSION) -c pytorch
 	touch pytorch.done
