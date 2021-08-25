@@ -41,6 +41,8 @@ mmsegmentation.done: mmdet.done
 
 mmdet3d.done: mmsegmentation.done
 	. ./activate_python.sh && cd ../ && pip install -e .
+	# NOTE(kan-bayashi): Workaround for https://github.com/open-mmlab/mmdetection3d/issues/650
+	. ./activate_python.sh && pip install mmpycocotools pycocotools==2.0.1
 	touch mmdet3.done
 
 clean:
