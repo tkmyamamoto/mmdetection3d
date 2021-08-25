@@ -44,5 +44,5 @@ mmdet3d.done: mmsegmentation.done
 	touch mmdet3.done
 
 clean:
-	rm -fr venv *.done
+	rm -fr venv *.done activate_python.sh miniconda.sh
 	find -iname "*.pyc" -delete
