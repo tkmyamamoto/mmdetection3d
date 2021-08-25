@@ -18,7 +18,7 @@ miniconda.done: show_variables
 	touch miniconda.done
 
 pytorch.done: miniconda.done
-	. ./activate_python.sh && conda install pytorch==$(PYTORCH_VERSION) \
+	. ./activate_python.sh && conda install -y pytorch==$(PYTORCH_VERSION) \
 		torchvision==$(TORCH_VISION_VERSION) cudatoolkit=$(CUDA_VERSION) -c pytorch
 	touch pytorch.done
 
