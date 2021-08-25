@@ -38,7 +38,7 @@ mmsegmentation.done: mmdet.done
 	touch mmsegmentation.done
 
 mmdet3d.done: mmsegmentation.done
-	. ./activate_python.sh && cd ../ && pip install -v -e .
+	. ./activate_python.sh && cd ../ && pip install -e .
 	touch mmdet3.done
 
 clean:
