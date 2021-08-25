@@ -20,8 +20,21 @@ miniconda.done: show_variables
 pytorch.done: miniconda.done
 	# Numpy version is better to fix for the compatibility
 	. ./activate_python.sh && conda install -y numpy=1.19
-	. ./activate_python.sh && conda install -y pytorch==$(PYTORCH_VERSION) \
-		torchvision==$(TORCH_VISION_VERSION) cudatoolkit=$(CUDA_VERSION) -c pytorch
+	# NOTE(kan-bayashi): TOO SLOW PYTORCH CONDA CHANNEL
+	# . ./activate_python.sh && conda install -y -c pytorch \
+	# 	pytorch==$(PYTORCH_VERSION) torchvision==$(TORCH_VISION_VERSION) cudatoolkit=$(CUDA_VERSION)
+	# NOTE(kan-bayashi): Workaround, using mirror
+	# 	https://blog.karatos.in/a?ID=01650-76d48624-a90d-48b8-887c-760430186d9d
+	. ./activate_python.sh && conda config --add channels https://mirrors.tuna.tsinghua.edu.cn/anaconda/cloud/pytorch/
+	. ./activate_python.sh && conda config --add channels https://mirrors.tuna.tsinghua.edu.cn/anaconda/cloud/conda-forge/
+	. ./activate_python.sh && conda config --add channels https://mirrors.tuna.tsinghua.edu.cn/anaconda/cloud/msys2/
+	. ./activate_python.sh && conda config --add channels https://mirrors.tuna.tsinghua.edu.cn/anaconda/cloud/bioconda/
+	. ./activate_python.sh && conda config --add channels https://mirrors.tuna.tsinghua.edu.cn/anaconda/cloud/menpo/
+	. ./activate_python.sh && conda config --add channels https://mirrors.tuna.tsinghua.edu.cn/anaconda/pkgs/free/
+	. ./activate_python.sh && conda config --add channels https://mirrors.tuna.tsinghua.edu.cn/anaconda/pkgs/main/
+	. ./activate_python.sh && conda config --set show_channel_urls yes
+	. ./activate_python.sh && conda install -y \
+		pytorch==$(PYTORCH_VERSION) torchvision==$(TORCH_VISION_VERSION) cudatoolkit=$(CUDA_VERSION)
 	touch pytorch.done
 
 mmcv.done: pytorch.done
