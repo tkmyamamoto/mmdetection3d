@@ -4,7 +4,7 @@ PYTORCH_VERSION:= 1.7.1
 TORCH_VISION_VERSION:= 0.8.2
 DOT:= .
 # NOTE(kan-bayashi): Make the cuda ops compatible with GPUs of various compute capabilities
-TORCH_CUDA_ARCH_LIST:= 3.5 6.0 6.1 7.0+PTX 8.0+PTX
+TORCH_CUDA_ARCH_LIST:= 5.2 6.0 6.1 7.0+PTX 8.0+PTX
 
 .PHONY: all clean show_variables
 
