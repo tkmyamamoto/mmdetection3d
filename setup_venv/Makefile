@@ -3,6 +3,9 @@ CUDA_VERSION:= 11.0
 PYTORCH_VERSION:= 1.7.1
 TORCH_VISION_VERSION:= 0.8.2
 DOT:= .
+# NOTE(kan-bayashi): Make the cuda ops compatible with GPUs of various compute capabilities
+TORCH_CUDA_ARCH_LIST:= 3.5 6.0 6.1 7.0+PTX 8.0+PTX
+
 .PHONY: all clean show_variables
 
 all: show_variables miniconda.done pytorch.done mmcv.done mmdet.done mmsegmentation.done mmdet3d.done
@@ -26,19 +29,13 @@ pytorch.done: miniconda.done
 	# NOTE(kan-bayashi): Workaround, using mirror
 	# 	https://blog.karatos.in/a?ID=01650-76d48624-a90d-48b8-887c-760430186d9d
 	. ./activate_python.sh && conda config --add channels https://mirrors.tuna.tsinghua.edu.cn/anaconda/cloud/pytorch/
-	. ./activate_python.sh && conda config --add channels https://mirrors.tuna.tsinghua.edu.cn/anaconda/cloud/conda-forge/
-	. ./activate_python.sh && conda config --add channels https://mirrors.tuna.tsinghua.edu.cn/anaconda/cloud/msys2/
-	. ./activate_python.sh && conda config --add channels https://mirrors.tuna.tsinghua.edu.cn/anaconda/cloud/bioconda/
-	. ./activate_python.sh && conda config --add channels https://mirrors.tuna.tsinghua.edu.cn/anaconda/cloud/menpo/
-	. ./activate_python.sh && conda config --add channels https://mirrors.tuna.tsinghua.edu.cn/anaconda/pkgs/free/
-	. ./activate_python.sh && conda config --add channels https://mirrors.tuna.tsinghua.edu.cn/anaconda/pkgs/main/
 	. ./activate_python.sh && conda config --set show_channel_urls yes
 	. ./activate_python.sh && conda install -y \
 		pytorch==$(PYTORCH_VERSION) torchvision==$(TORCH_VISION_VERSION) cudatoolkit=$(CUDA_VERSION)
 	touch pytorch.done
 
 mmcv.done: pytorch.done
-	. ./activate_python.sh && pip install --no-cache-dir mmcv-full \
+	. ./activate_python.sh && TORCH_CUDA_ARCH_LIST="$(TORCH_CUDA_ARCH_LIST)" pip install --no-cache-dir mmcv-full \
 		-f https://download.openmmlab.com/mmcv/dist/cu$(subst $(DOT),,$(CUDA_VERSION))/torch$(PYTORCH_VERSION)/index.html
 	touch mmcv.done
 
@@ -53,7 +50,7 @@ mmsegmentation.done: mmdet.done
 	touch mmsegmentation.done
 
 mmdet3d.done: mmsegmentation.done
-	. ./activate_python.sh && cd ../ && pip install -e .
+	. ./activate_python.sh && cd ../ && TORCH_CUDA_ARCH_LIST="$(TORCH_CUDA_ARCH_LIST)" pip install -e .
 	# NOTE(kan-bayashi): Workaround for https://github.com/open-mmlab/mmdetection3d/issues/650
 	. ./activate_python.sh && pip install mmpycocotools pycocotools==2.0.1
 	touch mmdet3.done
