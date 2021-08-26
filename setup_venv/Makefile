@@ -38,18 +38,18 @@ pytorch.done: miniconda.done
 	touch pytorch.done
 
 mmcv.done: pytorch.done
-	. ./activate_python.sh && pip install mmcv-full \
+	. ./activate_python.sh && pip install --no-cache-dir mmcv-full \
 		-f https://download.openmmlab.com/mmcv/dist/cu$(subst $(DOT),,$(CUDA_VERSION))/torch$(PYTORCH_VERSION)/index.html
 	touch mmcv.done
 
 mmdet.done: mmcv.done
 	# NOTE(kan-bayashi): Update version?
-	. ./activate_python.sh && pip install mmdet==2.14.0
+	. ./activate_python.sh && pip install --no-cache-dir mmdet==2.14.0
 	touch mmdet.done
 
 mmsegmentation.done: mmdet.done
 	# NOTE(kan-bayashi): Update version?
-	. ./activate_python.sh && pip install mmsegmentation==0.14.1
+	. ./activate_python.sh && pip install --no-cache-dir mmsegmentation==0.14.1
 	touch mmsegmentation.done
 
 mmdet3d.done: mmsegmentation.done
