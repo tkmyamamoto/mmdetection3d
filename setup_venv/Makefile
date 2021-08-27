@@ -8,7 +8,7 @@ TORCH_CUDA_ARCH_LIST:= 5.2 6.0 6.1 7.0+PTX 8.0+PTX
 
 .PHONY: all clean show_variables
 
-all: show_variables miniconda.done pytorch.done mmcv.done mmdet.done mmsegmentation.done mmdet3d.done
+all: show_variables miniconda.done pytorch.done mmcv.done mmdet.done mmsegmentation.done mmdet3d.done open3d.done
 
 show_variables:
 	@echo PYTHON_VERSION=$(PYTHON_VERSION)
