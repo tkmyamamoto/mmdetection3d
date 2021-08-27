@@ -53,7 +53,15 @@ mmdet3d.done: mmsegmentation.done
 	. ./activate_python.sh && cd ../ && TORCH_CUDA_ARCH_LIST="$(TORCH_CUDA_ARCH_LIST)" pip install -e .
 	# NOTE(kan-bayashi): Workaround for https://github.com/open-mmlab/mmdetection3d/issues/650
 	. ./activate_python.sh && pip install mmpycocotools pycocotools==2.0.1
-	touch mmdet3.done
+	touch mmdet3d.done
+
+recompile.done: mmdet3d.done
+	# NOTE(tkmyamamoto): Recompile for GPU architecture
+	. ./activate_python.sh && TORCH_CUDA_ARCH_LIST="$(TORCH_CUDA_ARCH_LIST)" pip install --no-cache-dir mmcv-full \
+		-f https://download.openmmlab.com/mmcv/dist/cu$(subst $(DOT),,$(CUDA_VERSION))/torch$(PYTORCH_VERSION)/index.html
+	. ./activate_python.sh && cd ../ && TORCH_CUDA_ARCH_LIST="$(TORCH_CUDA_ARCH_LIST)" pip install -e .
+	. ./activate_python.sh && pip install mmpycocotools pycocotools==2.0.1
+	touch recompile.done
 
 clean:
 	rm -fr venv *.done activate_python.sh miniconda.sh
