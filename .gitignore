@@ -144,4 +144,4 @@ pp_nus_3d/
 run/vis_data
 run/vis_data_nus-mono3d
 run/visualize_results
-!/nuscenes/devkit
+!/nuscenes-devkit
