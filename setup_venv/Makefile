@@ -8,7 +8,7 @@ TORCH_CUDA_ARCH_LIST:= 5.2 6.0 6.1 7.0+PTX 8.0+PTX
 
 .PHONY: all clean show_variables
 
-all: show_variables miniconda.done pytorch.done mmcv.done mmdet.done mmsegmentation.done mmdet3d.done
+all: show_variables miniconda.done pytorch.done mmcv.done mmdet.done mmsegmentation.done mmdet3d.done open3d.done
 
 show_variables:
 	@echo PYTHON_VERSION=$(PYTHON_VERSION)
@@ -53,7 +53,13 @@ mmdet3d.done: mmsegmentation.done
 	. ./activate_python.sh && cd ../ && TORCH_CUDA_ARCH_LIST="$(TORCH_CUDA_ARCH_LIST)" pip install -e .
 	# NOTE(kan-bayashi): Workaround for https://github.com/open-mmlab/mmdetection3d/issues/650
 	. ./activate_python.sh && pip install mmpycocotools pycocotools==2.0.1
-	touch mmdet3.done
+	touch mmdet3d.done
+
+open3d.done: mmdet3d.done
+	# NOTE(tkmyamamoto): The latest open3d does not work
+	# 	See https://github.com/open-mmlab/mmdetection3d/issues/344
+	. ./activate_python.sh && pip install open3d==0.11
+	touch open3d.done
 
 clean:
 	rm -fr venv *.done activate_python.sh miniconda.sh
