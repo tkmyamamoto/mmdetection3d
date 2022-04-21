@@ -132,3 +132,14 @@ data/sunrgbd/OFFICIAL_SUNRGBD/
 
 # Waymo evaluation
 mmdet3d/core/evaluation/waymo_utils/compute_detection_metrics_main
+
+# yamamoto edit
+*.pdf
+*.pickle
+*.out
+*.pcd
+cp_nus_3d/
+pp_nus_3d/
+run/vis_data
+run/vis_data_nus-mono3d
+run/visualize_results
